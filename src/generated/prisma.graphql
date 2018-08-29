@@ -1,0 +1,673 @@
+# source: https://us1.prisma.sh/public-greatcap-894/allebt-dev/dev
+# timestamp: Tue Aug 21 2018 19:56:32 GMT-0500 (CDT)
+
+type AggregateRegister {
+  count: Int!
+}
+
+type AggregateUser {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createUser(data: UserCreateInput!): User!
+  createRegister(data: RegisterCreateInput!): Register!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateRegister(data: RegisterUpdateInput!, where: RegisterWhereUniqueInput!): Register
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteRegister(where: RegisterWhereUniqueInput!): Register
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertRegister(where: RegisterWhereUniqueInput!, create: RegisterCreateInput!, update: RegisterUpdateInput!): Register!
+  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  updateManyRegisters(data: RegisterUpdateInput!, where: RegisterWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyRegisters(where: RegisterWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  registers(where: RegisterWhereInput, orderBy: RegisterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Register]!
+  user(where: UserWhereUniqueInput!): User
+  register(where: RegisterWhereUniqueInput!): Register
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  registersConnection(where: RegisterWhereInput, orderBy: RegisterOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RegisterConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Register implements Node {
+  id: ID!
+  isRegistered: Boolean!
+  ebtCardNumber: String!
+  ebtCardState: String
+  phoneNumber: String!
+}
+
+"""A connection to a list of items."""
+type RegisterConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [RegisterEdge]!
+  aggregate: AggregateRegister!
+}
+
+input RegisterCreateInput {
+  isRegistered: Boolean
+  ebtCardNumber: String!
+  ebtCardState: String
+  phoneNumber: String!
+}
+
+input RegisterCreateOneInput {
+  create: RegisterCreateInput
+  connect: RegisterWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type RegisterEdge {
+  """The item at the end of the edge."""
+  node: Register!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum RegisterOrderByInput {
+  id_ASC
+  id_DESC
+  isRegistered_ASC
+  isRegistered_DESC
+  ebtCardNumber_ASC
+  ebtCardNumber_DESC
+  ebtCardState_ASC
+  ebtCardState_DESC
+  phoneNumber_ASC
+  phoneNumber_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type RegisterPreviousValues {
+  id: ID!
+  isRegistered: Boolean!
+  ebtCardNumber: String!
+  ebtCardState: String
+  phoneNumber: String!
+}
+
+type RegisterSubscriptionPayload {
+  mutation: MutationType!
+  node: Register
+  updatedFields: [String!]
+  previousValues: RegisterPreviousValues
+}
+
+input RegisterSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [RegisterSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [RegisterSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [RegisterSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: RegisterWhereInput
+}
+
+input RegisterUpdateDataInput {
+  isRegistered: Boolean
+  ebtCardNumber: String
+  ebtCardState: String
+  phoneNumber: String
+}
+
+input RegisterUpdateInput {
+  isRegistered: Boolean
+  ebtCardNumber: String
+  ebtCardState: String
+  phoneNumber: String
+}
+
+input RegisterUpdateOneInput {
+  create: RegisterCreateInput
+  connect: RegisterWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: RegisterUpdateDataInput
+  upsert: RegisterUpsertNestedInput
+}
+
+input RegisterUpsertNestedInput {
+  update: RegisterUpdateDataInput!
+  create: RegisterCreateInput!
+}
+
+input RegisterWhereInput {
+  """Logical AND on all given filters."""
+  AND: [RegisterWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [RegisterWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [RegisterWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  isRegistered: Boolean
+
+  """All values that are not equal to given value."""
+  isRegistered_not: Boolean
+  ebtCardNumber: String
+
+  """All values that are not equal to given value."""
+  ebtCardNumber_not: String
+
+  """All values that are contained in given list."""
+  ebtCardNumber_in: [String!]
+
+  """All values that are not contained in given list."""
+  ebtCardNumber_not_in: [String!]
+
+  """All values less than the given value."""
+  ebtCardNumber_lt: String
+
+  """All values less than or equal the given value."""
+  ebtCardNumber_lte: String
+
+  """All values greater than the given value."""
+  ebtCardNumber_gt: String
+
+  """All values greater than or equal the given value."""
+  ebtCardNumber_gte: String
+
+  """All values containing the given string."""
+  ebtCardNumber_contains: String
+
+  """All values not containing the given string."""
+  ebtCardNumber_not_contains: String
+
+  """All values starting with the given string."""
+  ebtCardNumber_starts_with: String
+
+  """All values not starting with the given string."""
+  ebtCardNumber_not_starts_with: String
+
+  """All values ending with the given string."""
+  ebtCardNumber_ends_with: String
+
+  """All values not ending with the given string."""
+  ebtCardNumber_not_ends_with: String
+  ebtCardState: String
+
+  """All values that are not equal to given value."""
+  ebtCardState_not: String
+
+  """All values that are contained in given list."""
+  ebtCardState_in: [String!]
+
+  """All values that are not contained in given list."""
+  ebtCardState_not_in: [String!]
+
+  """All values less than the given value."""
+  ebtCardState_lt: String
+
+  """All values less than or equal the given value."""
+  ebtCardState_lte: String
+
+  """All values greater than the given value."""
+  ebtCardState_gt: String
+
+  """All values greater than or equal the given value."""
+  ebtCardState_gte: String
+
+  """All values containing the given string."""
+  ebtCardState_contains: String
+
+  """All values not containing the given string."""
+  ebtCardState_not_contains: String
+
+  """All values starting with the given string."""
+  ebtCardState_starts_with: String
+
+  """All values not starting with the given string."""
+  ebtCardState_not_starts_with: String
+
+  """All values ending with the given string."""
+  ebtCardState_ends_with: String
+
+  """All values not ending with the given string."""
+  ebtCardState_not_ends_with: String
+  phoneNumber: String
+
+  """All values that are not equal to given value."""
+  phoneNumber_not: String
+
+  """All values that are contained in given list."""
+  phoneNumber_in: [String!]
+
+  """All values that are not contained in given list."""
+  phoneNumber_not_in: [String!]
+
+  """All values less than the given value."""
+  phoneNumber_lt: String
+
+  """All values less than or equal the given value."""
+  phoneNumber_lte: String
+
+  """All values greater than the given value."""
+  phoneNumber_gt: String
+
+  """All values greater than or equal the given value."""
+  phoneNumber_gte: String
+
+  """All values containing the given string."""
+  phoneNumber_contains: String
+
+  """All values not containing the given string."""
+  phoneNumber_not_contains: String
+
+  """All values starting with the given string."""
+  phoneNumber_starts_with: String
+
+  """All values not starting with the given string."""
+  phoneNumber_not_starts_with: String
+
+  """All values ending with the given string."""
+  phoneNumber_ends_with: String
+
+  """All values not ending with the given string."""
+  phoneNumber_not_ends_with: String
+}
+
+input RegisterWhereUniqueInput {
+  id: ID
+  ebtCardNumber: String
+}
+
+type Subscription {
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  register(where: RegisterSubscriptionWhereInput): RegisterSubscriptionPayload
+}
+
+type User implements Node {
+  id: ID!
+  email: String!
+  password: String!
+  name: String!
+  ebtRegistration(where: RegisterWhereInput): Register
+}
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  email: String!
+  password: String!
+  name: String!
+  ebtRegistration: RegisterCreateOneInput
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge."""
+  node: User!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  email: String!
+  password: String!
+  name: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+}
+
+input UserUpdateInput {
+  email: String
+  password: String
+  name: String
+  ebtRegistration: RegisterUpdateOneInput
+}
+
+input UserWhereInput {
+  """Logical AND on all given filters."""
+  AND: [UserWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [UserWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [UserWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  ebtRegistration: RegisterWhereInput
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
+}
